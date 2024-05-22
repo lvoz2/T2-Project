@@ -24,11 +24,11 @@ def __iterate_files(directory: Path, image_types: list[str]) -> Any:
     assets: Any = {} # I'm not giving this an explicit type hint because it will end up being an n-dimensional dict, where n could be any number
     for item in Path.iterdir(directory):
         if item.is_file() and item.suffix in image_types:
-            assets[item.stem]["image"]: Surface = image.load(item)
+            assets[item.stem]["image"] = image.load(item)
 
         # if a sub-folder is found
         elif item.is_dir():
-            assets[item.name]: Any = __iterate_files(item, image_types)
+            assets[item.name] = __iterate_files(item, image_types)
     return assets
 
 
