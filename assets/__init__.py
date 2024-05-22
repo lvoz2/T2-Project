@@ -6,12 +6,11 @@
         that they can be used in the program without causing path
         errors.
 """
-
-# Imports
 from pathlib import Path
+from pygame import Surface, image, Rect
 
 # Global Variables
-GAME_ASSETS: dict[str, Path] = {}
+GAME_ASSETS: dict[str, dict[str, Surface | int | Rect]] = {}
 
 
 def __iterate_files(directory: Path, image_types: tuple):
@@ -26,7 +25,11 @@ def __iterate_files(directory: Path, image_types: tuple):
     """
     for item in Path.iterdir(directory):
         if item.is_file and item.suffix in image_types:
-            GAME_ASSETS[item.stem] = item
+            asset = image.load(item)
+            GAME_ASSETS[item.stem]["image"] = asset
+            GAME_ASSETS[item.stem]["height"] = asset.get_height()
+            GAME_ASSETS[item.stem]["width"] = asset.get_width()
+            GAME_ASSETS[item.stem]["rect"] = asset.get_rect()
 
         # if a sub-folder is found
         elif item.is_dir():
