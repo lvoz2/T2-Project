@@ -14,12 +14,12 @@ class Map:
             window (pygame.Surface): The game window surface.
         """
         self.window = window
-        self.map_image = pygame.image.load(GAME_ASSETS["dungeon_map"]).convert_alpha()
+        self.map_image = GAME_ASSETS["dungeon_map"].convert_alpha()
         self.map_image = pygame.transform.scale(self.map_image, (self.window.get_width(), self.window.get_height()))
         self.player_images = {
-            'Warrior': pygame.image.load(GAME_ASSETS['warrior']).convert_alpha(),
-            'Mage': pygame.image.load(GAME_ASSETS['mage']).convert_alpha(),
-            'Rogue': pygame.image.load(GAME_ASSETS["rogue"]).convert_alpha()
+            'Warrior': GAME_ASSETS['warrior'].convert_alpha(),
+            'Mage': GAME_ASSETS['mage'].convert_alpha(),
+            'Rogue': GAME_ASSETS["rogue"].convert_alpha()
         }
         self.player_type = None
         self.player_position = [self.window.get_width() / 2, self.window.get_height() / 2]
@@ -84,7 +84,7 @@ class Map:
         """
         Spawn the blue orb in the center of the map.
         """
-        self.blue_orb = pygame.image.load(GAME_ASSETS["blue_orb"]).convert_alpha()
+        self.blue_orb = GAME_ASSETS["blue_orb"].convert_alpha()
         self.blue_orb = pygame.transform.scale(self.blue_orb, (50, 50))
         self.orb_position = [self.window.get_width() / 2 - 25, self.window.get_height() / 2 - 25]
 
