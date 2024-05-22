@@ -7,13 +7,11 @@
         errors.
 """
 from pathlib import Path
-from pygame import Surface, image, Rect
-
-# Global Variables
-GAME_ASSETS: dict[str, dict[str, Surface | int | Rect]] = {}
+from pygame import Surface, image
+from typing import *
 
 
-def __iterate_files(directory: Path, image_types: tuple):
+def __iterate_files(directory: Path, image_types: list[str]) -> Any:
     """
         Iterates over files in a directory adding them 
         to the game assets. Recursively calls itself when
@@ -21,30 +19,28 @@ def __iterate_files(directory: Path, image_types: tuple):
 
     Args:
         directory (Path): Path to sub-directory
-        image_types (tuple): tuple of valid image file types
+        image_types (list of strings): tuple of valid image file types
     """
+    assets: Any = {} # I'm not giving this an explicit type hint because it will end up being an n-dimensional dict, where n could be any number
     for item in Path.iterdir(directory):
-        if item.is_file and item.suffix in image_types:
-            asset = image.load(item)
-            GAME_ASSETS[item.stem]["image"] = asset
-            GAME_ASSETS[item.stem]["height"] = asset.get_height()
-            GAME_ASSETS[item.stem]["width"] = asset.get_width()
-            GAME_ASSETS[item.stem]["rect"] = asset.get_rect()
+        if item.is_file() and item.suffix in image_types:
+            assets[item.stem]["image"]: Surface = image.load(item)
 
         # if a sub-folder is found
         elif item.is_dir():
-            __iterate_files(item, image_types)
+            assets[item.name]: Any = __iterate_files(item, image_types)
+    return assets
 
 
-def load_assets():
+def load_assets() -> None:
     """
     Searches the local directory for assets
     using current working directory.
     """
     # Constants
     cwd: Path = Path.cwd()
-    assets_folder = Path.joinpath(cwd, "assets")
-    image_types = (".jpg", ".png")
+    assets_folder: Path = Path.joinpath(cwd, "assets")
+    image_types: list[str] = [".jpg", ".png"]
 
     # Verify assets folder exists
     if not assets_folder.exists():
