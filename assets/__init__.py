@@ -32,7 +32,7 @@ def __iterate_files(directory: Path, image_types: list[str]) -> Any:
     return assets
 
 
-def load_assets() -> None:
+def load_assets() -> Any:
     """
     Searches the local directory for assets
     using current working directory.
@@ -49,4 +49,4 @@ def load_assets() -> None:
     # Iterate over files in the directory adding    \
     #   each image to the dictionary. Images will  \
     #   be added by the file name, sans the suffix
-    __iterate_files(assets_folder, image_types)
+    return __iterate_files(assets_folder, image_types)
