@@ -50,3 +50,6 @@ def load_assets() -> Any:
     #   each image to the dictionary. Images will  \
     #   be added by the file name, sans the suffix
     return __iterate_files(assets_folder, image_types)
+
+
+GAME_ASSETS = load_assets()
