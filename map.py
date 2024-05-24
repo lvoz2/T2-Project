@@ -3,10 +3,11 @@ import random
 import pygame
 from assets import GAME_ASSETS
 from enemy import Enemy
+import math
 
 
 class Map:
-    def __init__(self, window):
+    def __init__(self, window) -> None:
         """
         Initialize the Map class.
 
@@ -14,12 +15,12 @@ class Map:
             window (pygame.Surface): The game window surface.
         """
         self.window = window
-        self.map_image = GAME_ASSETS["dungeon_map"].convert_alpha()
+        self.map_image: Surface = GAME_ASSETS["dungeon_map"].convert_alpha()
         self.map_image = pygame.transform.scale(self.map_image, (self.window.get_width(), self.window.get_height()))
-        self.player_images = {
-            'Warrior': GAME_ASSETS['warrior'].convert_alpha(),
-            'Mage': GAME_ASSETS['mage'].convert_alpha(),
-            'Rogue': GAME_ASSETS["rogue"].convert_alpha()
+        self.player_images: dict[str, Surface] = {
+            "Warrior": GAME_ASSETS["warrior"].convert_alpha(),
+            "Mage": GAME_ASSETS["mage"].convert_alpha(),
+            "Rogue": GAME_ASSETS["rogue"].convert_alpha()
         }
         self.player_type = None
         self.player_position = [self.window.get_width() / 2, self.window.get_height() / 2]
@@ -34,6 +35,32 @@ class Map:
         self.blue_orb = None
         self.game_over = False
 
+	def calculate_distance(self, loc1: list[Surface | int], loc2: list[Surface | int]) -> list[float]:
+		"""Calculate distance between two objects
+
+		Args:
+  			loc1 (list[Surface, x, y): The location information of the first object
+	 		loc2 (list[Surface, x, y): The location information of the second object
+		"""
+		if pygame.Rect.colliderect(loc1[0].get_rect(), loc2[0].get_rect()):
+			return [0.0, 0.0]
+		else:
+			distances: list[list[int]] = [
+				[(loc1[1] - (loc2[1] + loc2[0].get_width())), ((loc1[1] + loc1[0].get_width()) - loc2[1])],
+				[(loc1[2] - (loc2[2] + loc2[0].get_height())), ((loc1[2] + loc1[0].get_height()) - loc2[2])]
+			]
+			direction: list[bool] = [(distances[0][0] < 0), (distances[1][0] < 0)]
+			if direction[0]:
+				if direction[1]:
+					return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][1])]
+				else:
+					return [math.sqrt((distances[0][1] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][1])]
+			else:
+				if direction[1]:
+					return [math.sqrt((distances[0][0] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][0])]
+				else:
+					return [math.sqrt((distances[0][0] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][0])]
+	
     def load_player(self, character_type):
         """
         Load the player character.
@@ -106,10 +133,10 @@ class Map:
         Handle user input events.
         
         Returns:
-            str: 'quit' if the game is over and should be exited, None otherwise.
+            str: "quit" if the game is over and should be exited, None otherwise.
         """
         if self.game_over:
-            return 'quit'  # Stop processing events if game is over
+            return "quit"  # Stop processing events if game is over
 
         keys = pygame.key.get_pressed()
         move_speed = 2
@@ -128,7 +155,7 @@ class Map:
         self.handle_combat()
 
         if self.blue_orb and self.check_orb_collision():
-            return 'quit'
+            return "quit"
 
     def draw(self):
         """
