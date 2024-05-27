@@ -35,16 +35,16 @@ class Map:
         self.blue_orb = None
         self.game_over = False
 
-    def calculate_distance(self, loc1: list[int], loc2: list[int]) -> list[float]:
+    def calculate_distance(self, loc1: list[int | pygame.Surface], loc2: list[int | pygame.Surface]) -> list[float]:
         """Calculate distance between two objects
 
         Args:
-            loc1 (list[x, y, width, height]): The location information of the first object
-            loc2 (list[x, y, width, height]): The location information of the second object
+            loc1 (list[x, y, Surface]): The location information of the first object
+            loc2 (list[x, y, Surface]): The location information of the second object
         """
         distances: list[list[int]] = [
-            [(loc1[0] - (loc2[0] + loc2[2])), ((loc1[0] + loc1[2]) - loc2[0])],
-            [(loc1[1] - (loc2[1] + loc2[3])), ((loc1[1] + loc1[3]) - loc2[1])]
+            [(loc1[0] - (loc2[0] + loc2[2].get_height())), ((loc1[0] + loc1[2].get_height()) - loc2[0])],
+            [(loc1[1] - (loc2[1] + loc2[2].get_width())), ((loc1[1] + loc1[2].get_width()) - loc2[1])]
         ]
         if distances == [[0,0][0.0]]
             return [0.0, 0.0]
@@ -79,7 +79,7 @@ class Map:
             bool: True if the player is in combat, False otherwise.
         """
         for enemy in self.enemies:
-            if self.calculate_distance([enemy.image, enemy.position[0], enemy.position[1]], [self.player_image, self.player_position[0], self.player_position[1]])[0] < 1:
+            if self.calculate_distance([enemy.position[0], enemy.position[1], enemy.image], [self.player_position[0], self.player_position[1], self.player_image])[0] < 1:
                 self.in_combat = True
                 self.current_enemy = enemy
                 return True
