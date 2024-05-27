@@ -35,32 +35,32 @@ class Map:
         self.blue_orb = None
         self.game_over = False
 
-	def calculate_distance(self, loc1: list[Surface | int], loc2: list[Surface | int]) -> list[float]:
-		"""Calculate distance between two objects
+    def calculate_distance(self, loc1: list[pygame.Surface | int], loc2: list[pygame.Surface | int]) -> list[float]:
+        """Calculate distance between two objects
 
-		Args:
-  			loc1 (list[Surface, x, y): The location information of the first object
-	 		loc2 (list[Surface, x, y): The location information of the second object
-		"""
-		if pygame.Rect.colliderect(loc1[0].get_rect(), loc2[0].get_rect()):
-			return [0.0, 0.0]
-		else:
-			distances: list[list[int]] = [
-				[(loc1[1] - (loc2[1] + loc2[0].get_width())), ((loc1[1] + loc1[0].get_width()) - loc2[1])],
-				[(loc1[2] - (loc2[2] + loc2[0].get_height())), ((loc1[2] + loc1[0].get_height()) - loc2[2])]
-			]
-			direction: list[bool] = [(distances[0][0] < 0), (distances[1][0] < 0)]
-			if direction[0]:
-				if direction[1]:
-					return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][1])]
-				else:
-					return [math.sqrt((distances[0][1] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][1])]
-			else:
-				if direction[1]:
-					return [math.sqrt((distances[0][0] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][0])]
-				else:
-					return [math.sqrt((distances[0][0] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][0])]
-	
+        Args:
+            loc1 (list[Surface, x, y): The location information of the first object
+            loc2 (list[Surface, x, y): The location information of the second object
+        """
+        if pygame.Rect.colliderect(loc1[0].get_rect(), loc2[0].get_rect()):
+            return [0.0, 0.0]
+        else:
+            distances: list[list[int]] = [
+                [(loc1[1] - (loc2[1] + loc2[0].get_width())), ((loc1[1] + loc1[0].get_width()) - loc2[1])],
+                [(loc1[2] - (loc2[2] + loc2[0].get_height())), ((loc1[2] + loc1[0].get_height()) - loc2[2])]
+            ]
+            direction: list[bool] = [(distances[0][0] < 0), (distances[1][0] < 0)]
+            if direction[0]:
+                if direction[1]:
+                    return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][1])]
+                else:
+                    return [math.sqrt((distances[0][1] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][1])]
+            else:
+                if direction[1]:
+                    return [math.sqrt((distances[0][0] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][0])]
+                else:
+                    return [math.sqrt((distances[0][0] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][0])]
+
     def load_player(self, character_type):
         """
         Load the player character.
@@ -80,7 +80,7 @@ class Map:
             bool: True if the player is in combat, False otherwise.
         """
         for enemy in self.enemies:
-            if pygame.math.Vector2(enemy.position).distance_to(self.player_position) < 50:
+            if self.calculate_distance([enemy.image, enemy.position[0], enemy.position[1]], [self.player_image, self.player_position[0], self.player_position[1]])[0] < 1:
                 self.in_combat = True
                 self.current_enemy = enemy
                 return True
