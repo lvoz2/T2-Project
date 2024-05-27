@@ -46,19 +46,48 @@ class Map:
             [(loc1[0] - (loc2[0] + loc2[2].get_height())), ((loc1[0] + loc1[2].get_height()) - loc2[0])],
             [(loc1[1] - (loc2[1] + loc2[2].get_width())), ((loc1[1] + loc1[2].get_width()) - loc2[1])]
         ]
+        print(distances)
         if distances == [[0,0],[0,0]]:
             return [0.0, 0.0]
         direction: list[bool] = [(distances[0][0] < 0), (distances[1][0] < 0)]
         if direction[0]:
             if direction[1]:
-                return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), math.atan(distances[1][0] / distances[0][1])]
+                angle = 0.0
+                if 0 in distances[0]:
+                    pass
+                elif 0 in distances[1]:
+                    pass
+                else:
+                    angle = math.atan(distances[1][0] / distances[0][1])
+                return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), angle]
             else:
-                return [math.sqrt((distances[0][1] ** 2) + (distances[1][1] ** 2)), math.atan(distances[1][1] / distances[0][1])]
+                angle = 0.0
+                if 0 in distances[0]:
+                    pass
+                elif 0 in distances[1]:
+                    pass
+                else:
+                    math.atan(distances[1][1] / distances[0][1])
+                return [math.sqrt((distances[0][1] ** 2) + (distances[1][1] ** 2)), angle]
         else:
             if direction[1]:
-                return [math.sqrt((distances[0][0] ** 2) + (distances[1][0] ** 2)), math.atan(distances[1][0] / distances[0][0])]
+                angle = 0.0
+                if 0 in distances[0]:
+                    pass
+                elif 0 in distances[1]:
+                    pass
+                else:
+                    math.atan(distances[1][0] / distances[0][0])
+                return [math.sqrt((distances[0][0] ** 2) + (distances[1][0] ** 2)), angle]
             else:
-                return [math.sqrt((distances[0][0] ** 2) + (distances[1][1] ** 2)), math.atan(distances[1][1] / distances[0][0])]
+                angle = 0.0
+                if 0 in distances[0]:
+                    pass
+                elif 0 in distances[1]:
+                    pass
+                else:
+                    math.atan(distances[1][1] / distances[0][0])
+                return [math.sqrt((distances[0][0] ** 2) + (distances[1][1] ** 2)), angle]
 
     def load_player(self, character_type):
         """
