@@ -46,19 +46,19 @@ class Map:
             [(loc1[0] - (loc2[0] + loc2[2].get_height())), ((loc1[0] + loc1[2].get_height()) - loc2[0])],
             [(loc1[1] - (loc2[1] + loc2[2].get_width())), ((loc1[1] + loc1[2].get_width()) - loc2[1])]
         ]
-        if distances == [[0,0][0.0]]
+        if distances == [[0,0],[0,0]]:
             return [0.0, 0.0]
         direction: list[bool] = [(distances[0][0] < 0), (distances[1][0] < 0)]
         if direction[0]:
             if direction[1]:
-                return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][1])]
+                return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), math.atan(distances[1][0] / distances[0][1])]
             else:
-                return [math.sqrt((distances[0][1] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][1])]
+                return [math.sqrt((distances[0][1] ** 2) + (distances[1][1] ** 2)), math.atan(distances[1][1] / distances[0][1])]
         else:
             if direction[1]:
-                return [math.sqrt((distances[0][0] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][0])]
+                return [math.sqrt((distances[0][0] ** 2) + (distances[1][0] ** 2)), math.atan(distances[1][0] / distances[0][0])]
             else:
-                return [math.sqrt((distances[0][0] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][0])]
+                return [math.sqrt((distances[0][0] ** 2) + (distances[1][1] ** 2)), math.atan(distances[1][1] / distances[0][0])]
 
     def load_player(self, character_type):
         """
