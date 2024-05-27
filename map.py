@@ -43,6 +43,7 @@ class Map:
             loc2 (list[Surface, x, y): The location information of the second object
         """
         if pygame.Rect.colliderect(loc1[0].get_rect(), loc2[0].get_rect()):
+            print("collided")
             return [0.0, 0.0]
         else:
             distances: list[list[int]] = [
@@ -50,6 +51,8 @@ class Map:
                 [(loc1[2] - (loc2[2] + loc2[0].get_height())), ((loc1[2] + loc1[0].get_height()) - loc2[2])]
             ]
             direction: list[bool] = [(distances[0][0] < 0), (distances[1][0] < 0)]
+            print(distances)
+            print(direction)
             if direction[0]:
                 if direction[1]:
                     return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][1])]
