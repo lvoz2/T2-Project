@@ -42,27 +42,23 @@ class Map:
             loc1 (list[x, y, width, height]): The location information of the first object
             loc2 (list[x, y, width, height]): The location information of the second object
         """
-        if pygame.Rect.colliderect(loc1[0].get_rect(), loc2[0].get_rect()):
-            print("collided")
+        distances: list[list[int]] = [
+            [(loc1[0] - (loc2[0] + loc2[2])), ((loc1[0] + loc1[2]) - loc2[0])],
+            [(loc1[1] - (loc2[1] + loc2[3])), ((loc1[1] + loc1[3]) - loc2[1])]
+        ]
+        if distances == [[0,0][0.0]]
             return [0.0, 0.0]
-        else:
-            distances: list[list[int]] = [
-                [(loc1[0] - (loc2[0] + loc2[2])), ((loc1[0] + loc1[2]) - loc2[0])],
-                [(loc1[1] - (loc2[1] + loc2[3])), ((loc1[1] + loc1[3]) - loc2[1])]
-            ]
-            direction: list[bool] = [(distances[0][0] < 0), (distances[1][0] < 0)]
-            print(distances)
-            print(direction)
-            if direction[0]:
-                if direction[1]:
-                    return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][1])]
-                else:
-                    return [math.sqrt((distances[0][1] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][1])]
+        direction: list[bool] = [(distances[0][0] < 0), (distances[1][0] < 0)]
+        if direction[0]:
+            if direction[1]:
+                return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][1])]
             else:
-                if direction[1]:
-                    return [math.sqrt((distances[0][0] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][0])]
-                else:
-                    return [math.sqrt((distances[0][0] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][0])]
+                return [math.sqrt((distances[0][1] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][1])]
+        else:
+            if direction[1]:
+                return [math.sqrt((distances[0][0] ** 2) + (distances[1][0] ** 2)), math.arctan(distances[1][0] / distances[0][0])]
+            else:
+                return [math.sqrt((distances[0][0] ** 2) + (distances[1][1] ** 2)), math.arctan(distances[1][1] / distances[0][0])]
 
     def load_player(self, character_type):
         """
