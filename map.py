@@ -42,6 +42,8 @@ class Map:
             loc1 (list[Surface, x, y): The location information of the first object
             loc2 (list[Surface, x, y): The location information of the second object
         """
+        print(loc1)
+        print(loc2)
         if pygame.Rect.colliderect(loc1[0].get_rect(), loc2[0].get_rect()):
             print("collided")
             return [0.0, 0.0]
