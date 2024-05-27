@@ -35,22 +35,20 @@ class Map:
         self.blue_orb = None
         self.game_over = False
 
-    def calculate_distance(self, loc1: list[pygame.Surface | int], loc2: list[pygame.Surface | int]) -> list[float]:
+    def calculate_distance(self, loc1: list[int], loc2: list[int]) -> list[float]:
         """Calculate distance between two objects
 
         Args:
-            loc1 (list[Surface, x, y): The location information of the first object
-            loc2 (list[Surface, x, y): The location information of the second object
+            loc1 (list[x, y, width, height]): The location information of the first object
+            loc2 (list[x, y, width, height]): The location information of the second object
         """
-        print(loc1)
-        print(loc2)
         if pygame.Rect.colliderect(loc1[0].get_rect(), loc2[0].get_rect()):
             print("collided")
             return [0.0, 0.0]
         else:
             distances: list[list[int]] = [
-                [(loc1[1] - (loc2[1] + loc2[0].get_width())), ((loc1[1] + loc1[0].get_width()) - loc2[1])],
-                [(loc1[2] - (loc2[2] + loc2[0].get_height())), ((loc1[2] + loc1[0].get_height()) - loc2[2])]
+                [(loc1[0] - (loc2[0] + loc2[2])), ((loc1[0] + loc1[2]) - loc2[0])],
+                [(loc1[1] - (loc2[1] + loc2[3])), ((loc1[1] + loc1[3]) - loc2[1])]
             ]
             direction: list[bool] = [(distances[0][0] < 0), (distances[1][0] < 0)]
             print(distances)
