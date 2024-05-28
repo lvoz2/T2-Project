@@ -1,7 +1,7 @@
 import pygame
 
 class Entity:
-    def __init__(self, surf: pygame.Surface, x: int, y: int, window: pygame.Surface, visible: boolean=False, scale: int=1) -> None:
+    def __init__(self, surf: pygame.Surface, x: int, y: int, window: pygame.Surface, visible: bool=False, scale: int=1) -> None:
         self.surf = surf.convert_alpha()
         self.x = x
         self.y = y
