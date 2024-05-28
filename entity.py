@@ -1,6 +1,6 @@
 import pygame
 
-class Entity():
+class Entity:
     def __init__(self, surf: pygame.Surface, x: int, y: int, window: pygame.Surface, visible: boolean=False, scale: int=1) -> None:
         self.surf = surf.convert_alpha()
         self.x = x
@@ -9,6 +9,7 @@ class Entity():
         self.height = self.surf.get_height()
         self.width = self.surf.get_width()
         self.visible = visible
+        self.health = -1
 
     def get_opp_corner(self) -> list[int]:
         return [self.x + self.width, self.y + self.height]
