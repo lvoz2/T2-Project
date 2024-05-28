@@ -66,20 +66,18 @@ class CharacterSelect:
         return buttons
 
     def run(self):
-        running = True
-        while running:
-            self.window.blit(self.background_image, (0, 0))
-            for character, (image, rect) in self.character_buttons.items():
-                self.window.blit(image, rect)
+        self.window.blit(self.background_image, (0, 0))
+        for character, (image, rect) in self.character_buttons.items():
+            self.window.blit(image, rect)
 
-            # Draw back button
-            pygame.draw.rect(self.window, (200, 200, 200), self.back_button)  # Draw a grey button
-            back_text = self.font.render('Back', True, (0, 0, 0))
-            text_rect = back_text.get_rect(center=self.back_button.center)
-            self.window.blit(back_text, text_rect)
+        # Draw back button
+        pygame.draw.rect(self.window, (200, 200, 200), self.back_button)  # Draw a grey button
+        back_text = self.font.render('Back', True, (0, 0, 0))
+        text_rect = back_text.get_rect(center=self.back_button.center)
+        self.window.blit(back_text, text_rect)
 
-            pygame.display.flip()
-
+        pygame.display.flip()
+        while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pygame.quit()
