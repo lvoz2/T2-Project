@@ -10,6 +10,7 @@ class Entity:
         self.width = self.surf.get_width()
         self.visible = visible
         self.health = -1
+        self.effects = {}
 
     def get_opp_corner(self) -> list[int]:
         return [self.x + self.width, self.y + self.height]
