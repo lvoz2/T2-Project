@@ -14,6 +14,15 @@ class Entity:
 
     def get_opp_corner(self) -> list[int]:
         return [self.x + self.width, self.y + self.height]
+    
+    def is_alive(self) -> bool:
+        return (self.health == 0)
+    
+    def damage(self, dmg: int) -> None:
+        if dmg >= self.health:
+            self.health = 0
+        else:
+            self.health -= dmg
 
     def draw(self) -> None:
         if self.visible:
