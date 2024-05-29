@@ -38,8 +38,15 @@ class Player(Character):
         return int(100 * floor(1.5 ** (lvl - 1)))
     
     def regen_stamina(self) -> None:
-        if self.stamina > 0:
-            if (self.stamina + self.stamina_regen_speed) <= self.max_stamina:
-                self.health += self.health_regen_speed
-            else:
-                self.health = self.max_health
+        if (self.stamina + self.stamina_regen_speed) <= self.max_stamina:
+            self.stamina += self.stamina_regen_speed
+        else:
+            self.stamina = self.max_stamina
+
+    def use_stamina(self, amount: int) -> bool:
+        if (self.stamina - amount) >= 0:
+            self.stamina -= amount
+            return True
+        else:
+            return False
+        
