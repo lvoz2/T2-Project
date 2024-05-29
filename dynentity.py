@@ -3,9 +3,8 @@ from entity import Entity
 import math
 
 class DynEntity(Entity):
-    def __init__(self, surf: pygame.Surface, x: int, y: int, window: pygame.Surface, health: int, visible: bool=False, scale: int=1) -> None:
-        super().__init__(surf, x, y, window, visible, scale)
-        self.health = health
+    def __init__(self, surf: pygame.Surface, x: int, y: int, window: pygame.Surface, health: int, health_regen_speed: int=5, visible: bool=False, scale: int=1) -> None:
+        super().__init__(surf, x, y, window, health, health_regen_speed, visible, scale)
     
     def move(self, dir: int, dist: int) -> None:
         """Move the dynamic entity.

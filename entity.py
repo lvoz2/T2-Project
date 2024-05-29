@@ -1,7 +1,7 @@
 import pygame
 
 class Entity:
-    def __init__(self, surf: pygame.Surface, x: int, y: int, window: pygame.Surface, visible: bool=False, scale: int=1) -> None:
+    def __init__(self, surf: pygame.Surface, x: int, y: int, window: pygame.Surface, health: int=-1, health_regen_speed: int=5, visible: bool=False, scale: int=1) -> None:
         self.surf = surf.convert_alpha()
         self.x = x
         self.y = y
@@ -9,7 +9,9 @@ class Entity:
         self.height = self.surf.get_height()
         self.width = self.surf.get_width()
         self.visible = visible
-        self.health = -1
+        self.health = health
+        self.max_health = health
+        self.health_regen_speed = health_regen_speed
         self.effects = {}
 
     def get_opp_corner(self) -> list[int]:
@@ -23,6 +25,13 @@ class Entity:
             self.health = 0
         else:
             self.health -= dmg
+    
+    def regen_health(self) -> None:
+        if self.health > 0:
+            if (self.health + self.health_regen_speed) <= self.max_health:
+                self.health += self.health_regen_speed
+            else:
+                self.health = self.max_health
 
     def draw(self) -> None:
         if self.visible:
