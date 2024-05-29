@@ -35,7 +35,7 @@ class Player(Character):
             req_xp: int = self.calc_req_xp(self.lvl + 1)
 
     def calc_req_xp(self, lvl: int) -> int:
-        return int(100 * floor(1.5 ** (lvl - 1)))
+        return int((100 / 2) * lvl * (1 + lvl))
     
     def regen_stamina(self) -> None:
         if (self.stamina + self.stamina_regen_speed) <= self.max_stamina:

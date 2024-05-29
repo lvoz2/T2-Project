@@ -34,59 +34,8 @@ class Map:
         self.current_enemy = None
         self.blue_orb = None
         self.game_over = False
-
-    def calculate_distance(self, loc1: list[int | pygame.Surface], loc2: list[int | pygame.Surface]) -> list[float]:
-        """Calculate distance between two objects
-
-        Args:
-            loc1 (list[x, y, Surface]): The location information of the first object
-            loc2 (list[x, y, Surface]): The location information of the second object
-        """
-        distances: list[list[int]] = [
-            [(loc1[0] - (loc2[0] + loc2[2].get_width())), ((loc1[0] + loc1[2].get_width()) - loc2[0])],
-            [(loc1[1] - (loc2[1] + loc2[2].get_height())), ((loc1[1] + loc1[2].get_height()) - loc2[1])]
-        ]
-        if distances == [[0.0,0.0],[0.0,0.0]]:
-            return [0.0, 0.0]
-        direction: list[bool] = [(distances[0][0] < 0), (distances[1][0] < 0)]
-        if direction[0]:
-            if direction[1]:
-                angle = 0.0
-                if 0.0 == distances[0][1]:
-                    angle = 0.0
-                elif 0.0 == distances[1][0]:
-                    angle = 90.0
-                else:
-                    angle = math.atan(distances[1][0] / distances[0][1])
-                return [math.sqrt((distances[0][1] ** 2) + (distances[1][0] ** 2)), angle]
-            else:
-                angle = 0.0
-                if 0.0 == distances[0][1]:
-                    angle = 0.0
-                elif 0.0 == distances[1][1]:
-                    angle = 270.0
-                else:
-                    math.atan(distances[1][1] / distances[0][1])
-                return [math.sqrt((distances[0][1] ** 2) + (distances[1][1] ** 2)), angle]
-        else:
-            if direction[1]:
-                angle = 0.0
-                if 0.0 == distances[0][0]:
-                    angle = 180.0
-                elif 0.0 == distances[1][0]:
-                    angle = 90.0
-                else:
-                    math.atan(distances[1][0] / distances[0][0])
-                return [math.sqrt((distances[0][0] ** 2) + (distances[1][0] ** 2)), angle]
-            else:
-                angle = 0.0
-                if 0.0 == distances[0][0]:
-                    angle = 180.0
-                elif 0.0 == distances[1][1]:
-                    angle = 270.0
-                else:
-                    math.atan(distances[1][1] / distances[0][0])
-                return [math.sqrt((distances[0][0] ** 2) + (distances[1][1] ** 2)), angle]
+        self.delta: list[int] = []
+        self.clock: pygame.time.Clock = pygame.time.Clock()
 
     def load_player(self, character_type):
         """
@@ -188,6 +137,7 @@ class Map:
         """
         Draw the game objects on the window.
         """
+        self.delta = self.clock.tick()
         self.window.fill((0, 0, 0))
         self.window.blit(self.map_image, (0, 0))
         self.window.blit(self.player_image, (self.player_position[0], self.player_position[1]))

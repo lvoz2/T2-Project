@@ -1,5 +1,6 @@
 from dynentity import DynEntity
 from entity import Entity
+from attack import Attack
 import pygame
 import math
 
@@ -9,10 +10,11 @@ class Character(DynEntity):
         self.name = name
         self.lvl: int = 0
         self.skills: dict[str, Any] = {}
-        self.attacks: list[Any] = []
+        self.attacks: list[Attack] = []
         self.defense: int = defense
         self.mana: int = mana
         self.strength: int = strength
         self.MAX_LVL: int = 50
     
     def attack(self, type: int, target: Entity) -> None:
+        self.attacks[type].damage(target)
