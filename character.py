@@ -4,7 +4,7 @@ import pygame
 import math
 
 class Character(DynEntity):
-    def __init__(self, surf: pygame.Surface, x: int, y: int, window: pygame.Surface, name: str, character_class: str, defense: int=10, mana: int=10, strength: int=10, scale: int=1) -> None:
+    def __init__(self, surf: pygame.Surface, x: int, y: int, window: pygame.Surface, name: str, character_class: str, scale: int=1, defense: int=10, mana: int=10, strength: int=10,) -> None:
         super().__init__(surf, x, y, window, 100, True, scale)
         self.name = name
         self.character_class = character_class
