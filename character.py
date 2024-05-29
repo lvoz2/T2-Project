@@ -1,54 +1,41 @@
-class Character:
-    MAX_LEVEL = 50  # Maximum level a character can reach
-    ATTRIBUTE_POINTS_PER_LEVEL = 3  # Number of attribute points gained per level
+from dynentity import DynEntity
+from screen import Screen
+import pygame
+import math
 
-    def __init__(self, name, character_class, armor):
-        self.name = name  # Character's name
-        self.character_class = character_class  # Character's class
-        self.armor = armor  # Character's armor value
-        self.level = 1  # Character's current level
-        self.experience_points = 0  # Character's current experience points
-        self.hit_points = 10  # Example starting value for character's hit points
-        self.armor_class = 10  # Example starting value for character's armor class
-        self.skills = {}  # Example empty dictionary for character's skills
-        self.inventory = []  # Example empty list for character's inventory
-        self.gold = 0  # Example starting value for character's gold
-        self.attribute_points = 0  # Attribute points available to allocate
+class Character(DynEntity):
+    def __init__(self, surf: pygame.Surface, x: int, y: int, window: pygame.Surface, name: str, character_class: str, defense: int=10, mana: int=10, strength: int=10, scale: int=1) -> None:
+        super().__init__(surf, x, y, window, 100, True, scale)
+        self.name = name
+        self.character_class = character_class
+        self.defense: int = defense
+        self.mana: int = mana
+        self.strength: int = strength
+        self.lvl: int = 0
+        self.xp: int = 0
+        self.skills: dict[str, Any] = {}
+        self.inventory: list[Any] = []
+        self.money: int = 0
+        self.attr_pts: int = 0
+        self.ATTR_PTS_PER_LVL: int = 3
+        self.MAX_LVL: int = 50
 
-    def assign_attribute_points(self, attribute, points):
-        # Ensure the attribute exists before assigning points
-        if attribute in self.__dict__:
-            setattr(self, attribute, getattr(self, attribute) + points)  # Add points to the attribute
-            self.attribute_points -= points  # Decrease available attribute points
+    def assign_attr_pts(self, attr: str, pts: int) -> None:
+        if attr in self.__dict__:
+            setattr(self, attr, getattr(self, attr) + pts)
+            self.attr_pts -= pts
         else:
-            print(f"Error: Attribute '{attribute}' does not exist.")
+            raise KeyError("Character attribute does not exist")
 
-    def gain_experience(self, experience):
-        self.experience_points += experience  # Increase character's experience points
-        # Calculate experience required for next level
-        required_experience = self.calculate_required_experience(self.level + 1)
-        # Check if character has enough experience to level up and is below the level cap
-        while self.experience_points >= required_experience and self.level < self.MAX_LEVEL:
-            self.level += 1  # Level up the character
-            self.experience_points -= required_experience  # Decrease character's experience points
-            self.hit_points += 10  # Example: Increase hit points by 10 each level up
-            self.attribute_points += self.ATTRIBUTE_POINTS_PER_LEVEL  # Allocate attribute points
-            print(f"Level up! {self.name} is now level {self.level}.")
-            # Calculate experience required for next level
-            required_experience = self.calculate_required_experience(self.level + 1)
+    def gain_xp(self, xp: int, screen: Screen) -> None:
+        self.xp += xp
+        req_xp: int = self.calc_req_xp(self.lvl + 1)
+        while self.xp >= req_xp and self.lvl < self.MAX_LVL:
+            self.lvl += 1
+            self.xp -= req_xp
+            self.attr_pts += self.ATTR_PTS_PER_LVL
+            # screen.show("Level Up", f"{self.name} is now level {self.level}")
+            req_xp: int = self.calc_req_xp(self.lvl + 1)
 
-    def calculate_required_experience(self, level):
-        # Example exponential scaling: Each level requires 100 more experience points than the previous level
-        return int(100 * (1.5 ** (level - 1)))
-
-    def is_alive(self):
-        return self.hit_points > 0
-
-    def take_damage(self, amount):
-        # Calculate the actual damage taken, taking into account the character's armor
-        actual_damage = max(0, amount - self.armor)
-        self.hit_points -= actual_damage
-        if self.hit_points <= 0:
-            print(f"{self.name} takes {actual_damage} damage and has been defeated!")
-        else:
-            print(f"{self.name} takes {actual_damage} damage. Remaining hit points: {self.hit_points}")
+    def calc_req_xp(self, lvl: int) -> int:
+        return int(100 * floor(1.5 ** (lvl - 1)))
